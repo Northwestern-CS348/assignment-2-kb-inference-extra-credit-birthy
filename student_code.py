@@ -142,7 +142,85 @@ class KnowledgeBase(object):
         """
         ####################################################
         # Student code goes here
+        if isinstance(fact_or_rule, Fact):
+            if fact_or_rule in self.facts:
+                index = self.facts.index(fact_or_rule)
+                output = self.explain_output(self.facts[index], 0)
+            else:
+                output = "Fact is not in the KB"
+        elif isinstance(fact_or_rule, Rule):
+            if fact_or_rule in self.rules:
+                index = self.rules.index(fact_or_rule)
+                # rule = ""
+                # rule += self.rules[index].name
+                output = self.explain_output(self.rules[index], 0)
+            else:
+                output = "Rule is not in the KB"
+        else:
+            return False
 
+        # output = "\n" + output
+        print(output)
+        return output
+
+    # define function explain_output() which generates the resulting output string for kb_explain()
+    def explain_output(self, f_r, indent):
+        output = ""
+        output += indent*"  "
+
+        if isinstance(f_r, Fact):
+            # check if fact is asserted --> if yes, add ASSERTED keyword
+            # statement = f_r.name
+            statement = f_r.statement.predicate + " " + ' '.join((str(t) for t in f_r.statement.terms))
+            if f_r.asserted:
+                output += "fact: (" + statement + ")" + " ASSERTED" + "\n"
+            else:
+                output += "fact: (" + statement + ")" + "\n"
+            # check if fact/rule is supported --> if yes, list out supports after line 2 "SUPPORTED BY"
+            if len(f_r.supported_by) != 0:
+                indent += 1
+                output += indent*"  "
+                output += "SUPPORTED BY" + "\n"
+                for pair in f_r.supported_by:
+                    indent += 1
+                    output += self.explain_output(pair[0], indent)
+                    output += self.explain_output(pair[1], indent)
+            return output
+
+        if isinstance(f_r, Rule):
+            output += "rule: ("
+            # list out items on left hand side of rule, each separated by ", "
+            # for leftstatement in f_r.lhs:
+            #     statement = leftstatement.predicate + " " + ' '.join((str(t) for t in leftstatement.terms))
+            #     output += "(" + statement + ")" + ", "
+            # get rid of last ", "
+            # output = output[:(len(output)-2)]
+
+            for lefti in range(len(f_r.lhs)):
+                output += str(f_r.lhs[lefti])
+                if lefti != 0:
+                    output += ", "
+
+
+            # add right hand side of rule
+            # rightstatement = f_r.rhs.predicate + " " + ' '.join((str(t) for t in f_r.rhs.terms))
+            output += ") -> " + str(f_r.rhs)
+
+            # check if rule is asserted --> if yes, add ASSERTED keyword
+            if f_r.asserted:
+                output += " ASSERTED" + "\n"
+            else:
+                output += "\n"
+            # check if fact/rule is supported
+            if len(f_r.supported_by) != 0:
+                indent += 1
+                output += indent*"  "
+                output += "SUPPORTED BY" + "\n"
+                for pair in f_r.supported_by:
+                    indent += 1
+                    output += self.explain_output(pair[0], indent)
+                    output += self.explain_output(pair[1], indent)
+            return output
 
 class InferenceEngine(object):
     def fc_infer(self, fact, rule, kb):
