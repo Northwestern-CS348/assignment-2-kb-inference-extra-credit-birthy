@@ -1,0 +1,32 @@
+TESTS WITH ERRORS 
+-------------------------------
+TESTS FAILED  
+test03 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 74, in test03
+    self.compare(self.expected, actual)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 18, in compare
+    '"{0}" ({1} lead spaces)'.format(a, len(a) - len(a.strip())))
+AssertionError: '"   [17 chars]x ?y), (bigger ?x ?y)) -> (covered ?y) ASSERTE[14 chars]ces)' != '"   [17 chars]x ?y)(bigger ?x ?y), ) -> (covered ?y) ASSERTE[14 chars]ces)'
+- "        rule: ((on ?x ?y), (bigger ?x ?y)) -> (covered ?y) ASSERTED" (8 lead spaces)
+?                           --
++ "        rule: ((on ?x ?y)(bigger ?x ?y), ) -> (covered ?y) ASSERTED" (8 lead spaces)
+?                                         ++
+
+
+test04 (gradingtests.UnitTests)
+Traceback (most recent call last):
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 136, in test04
+    self.compare(self.expected, actual)
+  File "/Users/k2i/academics/automatedgradingapp/app/testing/kb-inference-ec/gradingtests.py", line 18, in compare
+    '"{0}" ({1} lead spaces)'.format(a, len(a) - len(a.strip())))
+AssertionError: '"   [26 chars]e ?z), (eats ?z leaves)) -> (eats nyala leaves[14 chars]ces)' != '"   [26 chars]e ?z)(eats ?z leaves), ) -> (eats nyala leaves[14 chars]ces)'
+- "        rule: ((genls antelope ?z), (eats ?z leaves)) -> (eats nyala leaves)" (8 lead spaces)
+?                                    --
++ "        rule: ((genls antelope ?z)(eats ?z leaves), ) -> (eats nyala leaves)" (8 lead spaces)
+?                                                    ++
+
+
+-------------------------------
+TESTS SKIPPED 
+-------------------------------
